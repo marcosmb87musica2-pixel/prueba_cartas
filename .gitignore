@@ -1,0 +1,25 @@
+# v0 runtime files
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Bolt
+.bolt/
+
+# Temporary files
+.tmp-cartas/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Other
+.next/
+.DS_Store

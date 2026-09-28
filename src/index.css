@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: #070710;
+  color: #e8e8f0;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+@media (hover: none) {
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.card-face {
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06) 0%, transparent 50%),
+    linear-gradient(160deg, var(--card-bg-from, #1a1a3a) 0%, var(--card-bg-to, #0d0d22) 100%);
+}
+
+.card-back {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(230,185,78,0.06) 0px, rgba(230,185,78,0.06) 2px, transparent 2px, transparent 8px),
+    linear-gradient(160deg, #1a1530 0%, #0d0a1a 100%);
+}
+
+.text-shadow-strong {
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.6);
+}
+
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
