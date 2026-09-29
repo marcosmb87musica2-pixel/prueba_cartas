@@ -437,7 +437,7 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
             <CardView card={selectedField.card} size="lg" fieldMonster={selectedField} isField />
             <div className="flex-1 min-w-0">
               <h3 className="font-display font-bold text-white" style={uiBase}>{selectedField.card.name}</h3>
-              <p className="text-ink-300 mt-1" style={uiXs}>
+              <p className="text-ink-300 mt-1" style={{ fontSize: '20px' }}>
                 Monstruo · ATQ {selectedField.card.atk + selectedField.tempAtkModifier} / DEF {selectedField.card.def + selectedField.tempDefModifier}
               </p>
               <p className="text-ink-400 mt-0.5" style={uiXs}>
