@@ -427,7 +427,13 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
         <div className="fixed bottom-0 left-0 right-0 bg-ink-700 border-t-2 border-azure-500/40 rounded-t-2xl p-3 shadow-card-hover z-40 animate-slide-up"
           style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
         >
-          <div className="flex items-start gap-3 mb-2">
+          <div
+            className="flex items-start gap-3 mb-2"
+            style={{
+              '--ui-text-xs': 'clamp(12px, 1.5vw, 16px)',
+              '--ui-text-base': 'clamp(15px, 1.9vw, 20px)',
+            } as React.CSSProperties}
+          >
             <CardView card={selectedField.card} size="lg" fieldMonster={selectedField} isField />
             <div className="flex-1 min-w-0">
               <h3 className="font-display font-bold text-white" style={uiBase}>{selectedField.card.name}</h3>
