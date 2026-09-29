@@ -404,28 +404,28 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
 
       {/* Selected field monster action panel */}
       {selectedField && !selectedCard && (
-        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-azure-500/40 rounded-t-2xl p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
-          <div className="flex items-start gap-3 mb-2">
-            <CardView card={selectedField.card} size="sm" fieldMonster={selectedField} isField />
+        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-azure-500/40 rounded-t-2xl p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
+          <div className="flex items-start gap-4 mb-3">
+            <CardView card={selectedField.card} size="lg" fieldMonster={selectedField} isField />
             <div className="flex-1 min-w-0">
-              <h3 className="font-display font-bold text-sm text-white truncate">{selectedField.card.name}</h3>
-              <p className="text-[10px] text-ink-300 mt-0.5">
+              <h3 className="font-display font-bold text-base text-white">{selectedField.card.name}</h3>
+              <p className="text-xs text-ink-300 mt-1">
                 Monstruo · ATQ {selectedField.card.atk + selectedField.tempAtkModifier} / DEF {selectedField.card.def + selectedField.tempDefModifier}
               </p>
-              <p className="text-[10px] text-ink-400 mt-0.5">
+              <p className="text-xs text-ink-400 mt-0.5">
                 Posicion: {selectedField.position === 'attack' ? 'Ataque' : 'Defensa'}
                 {selectedField.hasChangedPosition && ' · Ya cambiada este turno'}
                 {selectedField.hasAttacked && ' · Ya atacó'}
               </p>
               {selectedField.trap && (
-                <p className="text-[10px] text-crimson-300 mt-0.5">Trampa: {selectedField.trap.name}</p>
+                <p className="text-xs text-crimson-300 mt-0.5">Trampa: {selectedField.trap.name}</p>
               )}
               {selectedField.magic && (
-                <p className="text-[10px] text-gold-300 mt-0.5">Magica: {selectedField.magic.name}</p>
+                <p className="text-xs text-gold-300 mt-0.5">Magica: {selectedField.magic.name}</p>
               )}
             </div>
             <button onClick={() => setSelectedFieldUid(null)} className="text-ink-300 hover:text-white">
-              <X size={18} />
+              <X size={20} />
             </button>
           </div>
           <div className="flex gap-2">
@@ -435,9 +435,9 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
                   dispatch({ type: 'START_ATTACK', attackerUid: selectedField.uid });
                   setSelectedFieldUid(null);
                 }}
-                className="flex-1 py-3 rounded-lg bg-crimson-600 text-white font-display font-bold text-xs hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1"
+                className="flex-1 py-3.5 rounded-lg bg-crimson-600 text-white font-display font-bold text-sm hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1.5"
               >
-                <Swords size={14} /> Atacar
+                <Swords size={16} /> Atacar
               </button>
             )}
             {!selectedField.hasChangedPosition && (
@@ -446,13 +446,13 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
                   dispatch({ type: 'CHANGE_POSITION', fieldUid: selectedField.uid });
                   setSelectedFieldUid(null);
                 }}
-                className="flex-1 py-3 rounded-lg bg-azure-600 text-white font-display font-bold text-xs hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1"
+                className="flex-1 py-3.5 rounded-lg bg-azure-600 text-white font-display font-bold text-sm hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1.5"
               >
-                <RotateCw size={14} /> {selectedField.position === 'attack' ? 'A Defensa' : 'A Ataque'}
+                <RotateCw size={16} /> {selectedField.position === 'attack' ? 'A Defensa' : 'A Ataque'}
               </button>
             )}
             {selectedField.hasChangedPosition && (
-              <p className="flex-1 text-[10px] text-ink-400 text-center py-2">Ya has cambiado la posicion de este monstruo este turno</p>
+              <p className="flex-1 text-xs text-ink-400 text-center py-2.5">Ya has cambiado la posicion de este monstruo este turno</p>
             )}
           </div>
         </div>
@@ -460,19 +460,19 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
 
       {/* Selected card action panel */}
       {selectedCard && (
-        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-gold-500/40 rounded-t-2xl p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
-          <div className="flex items-start gap-3 mb-2">
-            <CardView card={selectedCard} size="sm" />
+        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-gold-500/40 rounded-t-2xl p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
+          <div className="flex items-start gap-4 mb-3">
+            <CardView card={selectedCard} size="lg" />
             <div className="flex-1 min-w-0">
-              <h3 className="font-display font-bold text-sm text-white truncate">{selectedCard.name}</h3>
-              <p className="text-[10px] text-ink-300 mt-0.5">
+              <h3 className="font-display font-bold text-base text-white">{selectedCard.name}</h3>
+              <p className="text-xs text-ink-300 mt-1">
                 {selectedCard.type === 'monster' && `Monstruo · ATQ ${selectedCard.atk} / DEF ${selectedCard.def}`}
                 {selectedCard.type === 'trap' && `Trampa · ${selectedCard.description}`}
                 {selectedCard.type === 'magic' && `Magica · ${selectedCard.description}`}
               </p>
             </div>
             <button onClick={() => setSelectedHandCard(null)} className="text-ink-300 hover:text-white">
-              <X size={18} />
+              <X size={20} />
             </button>
           </div>
           <div className="flex gap-2">
@@ -481,16 +481,16 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
                 <button
                   onClick={() => handlePlayMonster(selectedCard, 'attack')}
                   disabled={!canPlayMore || !me.field.some((f) => f === null)}
-                  className="flex-1 py-3 rounded-lg bg-crimson-600 text-white font-display font-bold text-xs hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1 disabled:opacity-40"
+                  className="flex-1 py-3.5 rounded-lg bg-crimson-600 text-white font-display font-bold text-sm hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
                 >
-                  <Swords size={14} /> Ataque
+                  <Swords size={16} /> Ataque
                 </button>
                 <button
                   onClick={() => handlePlayMonster(selectedCard, 'defense')}
                   disabled={!canPlayMore || !me.field.some((f) => f === null)}
-                  className="flex-1 py-3 rounded-lg bg-azure-600 text-white font-display font-bold text-xs hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1 disabled:opacity-40"
+                  className="flex-1 py-3.5 rounded-lg bg-azure-600 text-white font-display font-bold text-sm hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
                 >
-                  <Shield size={14} /> Defensa
+                  <Shield size={16} /> Defensa
                 </button>
               </>
             )}
@@ -498,23 +498,23 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
               <button
                 onClick={() => handlePlayTrap(selectedCard)}
                 disabled={!canPlayMore || !me.field.some((f) => f !== null && !f.trap)}
-                className="flex-1 py-3 rounded-lg bg-crimson-500 text-white font-display font-bold text-xs hover:bg-crimson-600 active:scale-95 transition-all flex items-center justify-center gap-1 disabled:opacity-40"
+                className="flex-1 py-3.5 rounded-lg bg-crimson-500 text-white font-display font-bold text-sm hover:bg-crimson-600 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
               >
-                <Zap size={14} /> Colocar trampa
+                <Zap size={16} /> Colocar trampa
               </button>
             )}
             {selectedCard.type === 'magic' && (
               <button
                 onClick={() => handlePlayMagic(selectedCard)}
                 disabled={!canPlayMore}
-                className="flex-1 py-3 rounded-lg bg-gold-500 text-ink-900 font-display font-bold text-xs hover:bg-gold-400 active:scale-95 transition-all flex items-center justify-center gap-1 disabled:opacity-40"
+                className="flex-1 py-3.5 rounded-lg bg-gold-500 text-ink-900 font-display font-bold text-sm hover:bg-gold-400 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
               >
-                <Play size={14} /> Usar magica
+                <Play size={16} /> Usar magica
               </button>
             )}
           </div>
           {!canPlayMore && (
-            <p className="text-[10px] text-crimson-400 text-center mt-1.5">Ya has jugado 3 cartas este turno</p>
+            <p className="text-xs text-crimson-400 text-center mt-2">Ya has jugado 3 cartas este turno</p>
           )}
         </div>
       )}
