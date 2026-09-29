@@ -8,7 +8,7 @@ interface GameOverProps {
 
 export function GameOverScreen({ winnerName, loserName, onRestart }: GameOverProps) {
   return (
-    <div className="min-h-screen bg-ink-900 flex flex-col items-center justify-center px-6 animate-fade-in">
+    <div className="bg-ink-900 flex flex-col items-center justify-center px-6 animate-fade-in" style={{ minHeight: '100dvh' }}>
       <div className="animate-burst w-24 h-24 rounded-full bg-gold-400/10 border-2 border-gold-400/40 flex items-center justify-center mb-6">
         <Trophy size={48} className="text-gold-300" />
       </div>

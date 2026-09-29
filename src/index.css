@@ -4,8 +4,10 @@
 
 html, body, #root {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 body {
@@ -38,6 +40,38 @@ img {
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+:root {
+  --card-field-w: clamp(42px, min(15.5vw, 12.5vh), 120px);
+  --card-field-h: calc(var(--card-field-w) * 1.5);
+  --card-field-text: clamp(7px, calc(var(--card-field-w) * 0.14), 13px);
+  --card-field-num: clamp(10px, calc(var(--card-field-w) * 0.2), 18px);
+  --card-field-emoji: clamp(14px, calc(var(--card-field-w) * 0.3), 36px);
+  --card-field-bar: clamp(14px, calc(var(--card-field-w) * 0.22), 28px);
+
+  --card-hand-w: clamp(52px, min(19vw, 15.5vh), 110px);
+  --card-hand-h: calc(var(--card-hand-w) * 1.5);
+  --card-hand-text: clamp(9px, calc(var(--card-hand-w) * 0.14), 14px);
+  --card-hand-num: clamp(13px, calc(var(--card-hand-w) * 0.22), 22px);
+  --card-hand-emoji: clamp(20px, calc(var(--card-hand-w) * 0.32), 44px);
+  --card-hand-bar: clamp(18px, calc(var(--card-hand-w) * 0.24), 32px);
+
+  --card-detail-w: clamp(88px, min(26vw, 22vh), 160px);
+  --card-detail-h: calc(var(--card-detail-w) * 1.43);
+  --card-detail-text: clamp(11px, calc(var(--card-detail-w) * 0.12), 18px);
+  --card-detail-num: clamp(16px, calc(var(--card-detail-w) * 0.18), 28px);
+  --card-detail-emoji: clamp(28px, calc(var(--card-detail-w) * 0.3), 56px);
+  --card-detail-bar: clamp(24px, calc(var(--card-detail-w) * 0.26), 44px);
+
+  --card-back-w: clamp(20px, min(6vw, 4.5vh), 44px);
+  --card-back-h: calc(var(--card-back-w) * 1.5);
+
+  --field-gap: clamp(2px, 0.4vw, 6px);
+  --ui-text-xs: clamp(10px, 1.1vw, 13px);
+  --ui-text-sm: clamp(11px, 1.3vw, 15px);
+  --ui-text-base: clamp(13px, 1.5vw, 17px);
+  --lp-bar-h: clamp(8px, 1.2vh, 16px);
 }
 
 .card-face {

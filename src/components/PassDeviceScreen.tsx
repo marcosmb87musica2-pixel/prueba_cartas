@@ -8,7 +8,7 @@ interface PassDeviceProps {
 
 export function PassDeviceScreen({ playerName, onConfirm, message }: PassDeviceProps) {
   return (
-    <div className="min-h-screen bg-ink-900 flex flex-col items-center justify-center px-6">
+    <div className="bg-ink-900 flex flex-col items-center justify-center px-6" style={{ minHeight: '100dvh' }}>
       <div className="animate-pulse-glow w-20 h-20 rounded-2xl border-2 border-gold-500/40 flex items-center justify-center mb-6">
         <Smartphone size={36} className="text-gold-400" />
       </div>

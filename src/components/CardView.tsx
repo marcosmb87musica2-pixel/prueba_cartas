@@ -29,6 +29,12 @@ interface CardViewProps {
   className?: string;
 }
 
+const sizeVars: Record<string, { w: string; h: string; text: string; num: string; emoji: string; bar: string }> = {
+  sm: { w: 'var(--card-field-w)', h: 'var(--card-field-h)', text: 'var(--card-field-text)', num: 'var(--card-field-num)', emoji: 'var(--card-field-emoji)', bar: 'var(--card-field-bar)' },
+  md: { w: 'var(--card-hand-w)', h: 'var(--card-hand-h)', text: 'var(--card-hand-text)', num: 'var(--card-hand-num)', emoji: 'var(--card-hand-emoji)', bar: 'var(--card-hand-bar)' },
+  lg: { w: 'var(--card-detail-w)', h: 'var(--card-detail-h)', text: 'var(--card-detail-text)', num: 'var(--card-detail-num)', emoji: 'var(--card-detail-emoji)', bar: 'var(--card-detail-bar)' },
+};
+
 export function CardView({
   card,
   size = 'md',
@@ -42,21 +48,18 @@ export function CardView({
   showMagic = false,
   className = '',
 }: CardViewProps) {
-  const sizes = {
-    sm: { w: 'w-[56px] sm:w-[68px]', h: 'h-[84px] sm:h-[102px]', text: 'text-[9px] sm:text-[10px]', num: 'text-sm sm:text-base', emoji: 'text-xl sm:text-2xl', bar: 'h-5 sm:h-6' },
-    md: { w: 'w-20 sm:w-24', h: 'h-28 sm:h-32', text: 'text-[11px] sm:text-xs', num: 'text-base sm:text-lg', emoji: 'text-3xl sm:text-4xl', bar: 'h-6 sm:h-7' },
-    lg: { w: 'w-28', h: 'h-40', text: 'text-sm', num: 'text-xl', emoji: 'text-5xl', bar: 'h-8' },
-  };
-  const s = sizes[size];
+  const s = sizeVars[size];
 
   if (faceDown) {
     return (
       <div
-        className={`${s.w} ${s.h} rounded-lg card-back border border-gold-700/40 shadow-card flex items-center justify-center ${className}`}
+        className="rounded-lg card-back border border-gold-700/40 shadow-card flex items-center justify-center"
+        style={{ width: s.w, height: s.h }}
         onClick={onClick}
       >
-        <div className="w-8 h-8 rounded-full border-2 border-gold-500/30 flex items-center justify-center">
-          <span className="text-gold-500/40 text-xs font-display">B</span>
+        <div className="rounded-full border-2 border-gold-500/30 flex items-center justify-center"
+          style={{ width: '30%', height: '30%' }}>
+          <span className="text-gold-500/40 font-display" style={{ fontSize: '40%' }}>B</span>
         </div>
       </div>
     );
@@ -72,10 +75,12 @@ export function CardView({
 
     return (
       <div
-        className={`${s.w} ${s.h} rounded-lg border-2 shadow-card relative overflow-hidden cursor-pointer transition-all duration-200 ${
+        className={`rounded-lg border-2 shadow-card relative overflow-hidden cursor-pointer transition-all duration-200 ${
           selected ? 'ring-2 ring-gold-300 scale-105 shadow-glow' : ''
         } ${disabled ? 'opacity-50' : 'hover:scale-105'} ${isDef ? 'rotate-0' : ''} ${className}`}
         style={{
+          width: s.w,
+          height: s.h,
           borderColor: accent + '80',
           ['--card-bg-from' as string]: colors.from,
           ['--card-bg-to' as string]: colors.to,
@@ -84,28 +89,27 @@ export function CardView({
       >
         <div className="card-face w-full h-full flex flex-col p-1">
           <img src={card.image ?? `/cards/${card.suit}-${card.number}.webp`} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-75" />
-          {/* 4-corner numbers */}
           <div className="flex justify-between items-start">
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mc.number}</span>
-            <span className={`${s.text}`}>{SUIT_SYMBOL[mc.suit]}</span>
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mc.number}</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mc.number}</span>
+            <span style={{ fontSize: s.text }}>{SUIT_SYMBOL[mc.suit]}</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mc.number}</span>
           </div>
           <div className="flex-1 flex items-center justify-center">
-            <span className={`${s.emoji}`}>{SUIT_SYMBOL[mc.suit]}</span>
+            <span style={{ fontSize: s.emoji }}>{SUIT_SYMBOL[mc.suit]}</span>
           </div>
-          <div className={`${s.text} text-center font-display font-semibold text-white/90 truncate px-0.5`}>{mc.name}</div>
+          <div className="text-center font-display font-semibold text-white/90 truncate px-0.5" style={{ fontSize: s.text }}>{mc.name}</div>
           <div className="flex justify-between items-start">
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mc.number}</span>
-            <span className={`${s.text}`}>{SUIT_SYMBOL[mc.suit]}</span>
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mc.number}</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mc.number}</span>
+            <span style={{ fontSize: s.text }}>{SUIT_SYMBOL[mc.suit]}</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mc.number}</span>
           </div>
-          <div className={`flex justify-between items-center ${s.bar} px-1 mt-0.5`}>
+          <div className="flex justify-between items-center px-1 mt-0.5" style={{ height: s.bar }}>
             <div className="flex items-center gap-0.5">
               <Sword size={12} className="text-crimson-400" />
-              <span className={`${s.text} font-bold text-white`}>{atk}</span>
+              <span className="font-bold text-white" style={{ fontSize: s.text }}>{atk}</span>
             </div>
             <div className="flex items-center gap-0.5">
-              <span className={`${s.text} font-bold text-white`}>{def}</span>
+              <span className="font-bold text-white" style={{ fontSize: s.text }}>{def}</span>
               <Shield size={12} className="text-azure-400" />
             </div>
           </div>
@@ -141,10 +145,12 @@ export function CardView({
     const colors = suitColors('copas');
     return (
       <div
-        className={`${s.w} ${s.h} rounded-lg border-2 shadow-card relative overflow-hidden cursor-pointer transition-all duration-200 ${
+        className={`rounded-lg border-2 shadow-card relative overflow-hidden cursor-pointer transition-all duration-200 ${
           selected ? 'ring-2 ring-crimson-400 scale-105 shadow-glow-crimson' : ''
         } ${disabled ? 'opacity-50' : 'hover:scale-105'} ${className}`}
         style={{
+          width: s.w,
+          height: s.h,
           borderColor: colors.accent + '80',
           ['--card-bg-from' as string]: colors.from,
           ['--card-bg-to' as string]: colors.to,
@@ -154,18 +160,18 @@ export function CardView({
         <div className="card-face w-full h-full flex flex-col p-1">
           <img src={card.image ?? `/cards/${card.suit}-${card.number}.webp`} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-75" />
           <div className="flex justify-between items-start">
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{tc.number}</span>
-            <span className={`${s.text}`}>🥂</span>
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{tc.number}</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{tc.number}</span>
+            <span style={{ fontSize: s.text }}>🥂</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{tc.number}</span>
           </div>
           <div className="flex-1 flex items-center justify-center">
-            <span className={`${s.emoji}`}>🥂</span>
+            <span style={{ fontSize: s.emoji }}>🥂</span>
           </div>
-          <div className={`${s.text} text-center font-display font-semibold text-white/90 leading-tight`}>{tc.name}</div>
+          <div className="text-center font-display font-semibold text-white/90 leading-tight" style={{ fontSize: s.text }}>{tc.name}</div>
           <div className="flex justify-between items-start">
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{tc.number}</span>
-            <span className={`${s.text}`}>🥂</span>
-            <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{tc.number}</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{tc.number}</span>
+            <span style={{ fontSize: s.text }}>🥂</span>
+            <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{tc.number}</span>
           </div>
         </div>
       </div>
@@ -176,10 +182,12 @@ export function CardView({
   const colors = suitColors('oros');
   return (
     <div
-      className={`${s.w} ${s.h} rounded-lg border-2 shadow-card relative overflow-hidden cursor-pointer transition-all duration-200 ${
+      className={`rounded-lg border-2 shadow-card relative overflow-hidden cursor-pointer transition-all duration-200 ${
         selected ? 'ring-2 ring-gold-400 scale-105 shadow-glow' : ''
       } ${disabled ? 'opacity-50' : 'hover:scale-105'} ${className}`}
       style={{
+        width: s.w,
+        height: s.h,
         borderColor: colors.accent + '80',
         ['--card-bg-from' as string]: colors.from,
         ['--card-bg-to' as string]: colors.to,
@@ -187,20 +195,20 @@ export function CardView({
       onClick={onClick}
     >
       <div className="card-face w-full h-full flex flex-col p-1">
-          <img src={card.image ?? `/cards/${card.suit}-${card.number}.webp`} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-75" />
+        <img src={card.image ?? `/cards/${card.suit}-${card.number}.webp`} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-75" />
         <div className="flex justify-between items-start">
-          <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mg.number}</span>
-          <span className={`${s.text}`}>🪙</span>
-          <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mg.number}</span>
+          <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mg.number}</span>
+          <span style={{ fontSize: s.text }}>🪙</span>
+          <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mg.number}</span>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          <span className={`${s.emoji}`}>🪙</span>
+          <span style={{ fontSize: s.emoji }}>🪙</span>
         </div>
-        <div className={`${s.text} text-center font-display font-semibold text-white/90 leading-tight`}>{mg.name}</div>
+        <div className="text-center font-display font-semibold text-white/90 leading-tight" style={{ fontSize: s.text }}>{mg.name}</div>
         <div className="flex justify-between items-start">
-          <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mg.number}</span>
-          <span className={`${s.text}`}>🪙</span>
-          <span className={`${s.num} font-bold text-white text-shadow-strong leading-none`}>{mg.number}</span>
+          <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mg.number}</span>
+          <span style={{ fontSize: s.text }}>🪙</span>
+          <span className="font-bold text-white text-shadow-strong leading-none" style={{ fontSize: s.num }}>{mg.number}</span>
         </div>
       </div>
     </div>
@@ -208,14 +216,20 @@ export function CardView({
 }
 
 export function CardBack({ size = 'md' }: { size?: 'xs' | 'sm' | 'md' | 'lg' }) {
-  const sizes = { xs: 'w-8 h-12 sm:w-10 sm:h-14', sm: 'w-[56px] h-[84px] sm:w-[68px] sm:h-[102px]', md: 'w-20 h-28 sm:w-24 sm:h-32', lg: 'w-28 h-40' };
+  const dimMap: Record<string, { w: string; h: string }> = {
+    xs: { w: 'var(--card-back-w)', h: 'var(--card-back-h)' },
+    sm: { w: 'var(--card-field-w)', h: 'var(--card-field-h)' },
+    md: { w: 'var(--card-hand-w)', h: 'var(--card-hand-h)' },
+    lg: { w: 'var(--card-detail-w)', h: 'var(--card-detail-h)' },
+  };
+  const d = dimMap[size];
   if (size === 'xs') {
-    return <div className={`${sizes.xs} rounded card-back border border-gold-700/40 shadow-card`} />;
+    return <div className="rounded card-back border border-gold-700/40 shadow-card" style={{ width: d.w, height: d.h }} />;
   }
   return (
-    <div className={`${sizes[size]} rounded-lg card-back border border-gold-700/40 shadow-card flex items-center justify-center`}>
-      <div className="w-8 h-8 rounded-full border-2 border-gold-500/30 flex items-center justify-center">
-        <span className="text-gold-500/40 text-xs font-display">B</span>
+    <div className="rounded-lg card-back border border-gold-700/40 shadow-card flex items-center justify-center" style={{ width: d.w, height: d.h }}>
+      <div className="rounded-full border-2 border-gold-500/30 flex items-center justify-center" style={{ width: '30%', height: '30%' }}>
+        <span className="text-gold-500/40 font-display" style={{ fontSize: '40%' }}>B</span>
       </div>
     </div>
   );

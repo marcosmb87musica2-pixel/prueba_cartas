@@ -27,10 +27,10 @@ function LPBar({ player, isCurrent }: { player: PlayerState; isCurrent: boolean 
   const pct = Math.max(0, Math.min(100, player.lp));
   return (
     <div className={`flex items-center gap-2 ${isCurrent ? 'opacity-100' : 'opacity-60'}`}>
-      <span className={`text-xs font-display font-bold ${isCurrent ? 'text-gold-300' : 'text-ink-300'}`}>
-        {player.name}
+      <span className="font-display font-bold whitespace-nowrap" style={{ fontSize: 'var(--ui-text-sm)' }}>
+        <span className={isCurrent ? 'text-gold-300' : 'text-ink-300'}>{player.name}</span>
       </span>
-      <div className="flex-1 h-3 rounded-full bg-ink-700 overflow-hidden border border-ink-500">
+      <div className="flex-1 rounded-full bg-ink-700 overflow-hidden border border-ink-500" style={{ height: 'var(--lp-bar-h)' }}>
         <div
           className={`h-full rounded-full transition-all duration-500 ${
             pct > 50 ? 'bg-emerald-500' : pct > 25 ? 'bg-gold-400' : 'bg-crimson-500'
@@ -38,7 +38,7 @@ function LPBar({ player, isCurrent }: { player: PlayerState; isCurrent: boolean 
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs font-bold text-white tabular-nums w-8 text-right">{player.lp}</span>
+      <span className="font-bold text-white tabular-nums text-right" style={{ fontSize: 'var(--ui-text-sm)', minWidth: '2.5em' }}>{player.lp}</span>
     </div>
   );
 }
@@ -61,12 +61,13 @@ function FieldSlot({
   if (!fm) {
     return (
       <div
-        className={`w-[56px] h-[84px] sm:w-[68px] sm:h-[102px] rounded-lg border-2 border-dashed flex items-center justify-center ${
-          selectable ? 'border-gold-400/60 bg-gold-400/5 animate-pulse' : 'border-ink-500/40'
-        }`}
+        className="rounded-lg border-2 border-dashed flex items-center justify-center"
+        style={{ width: 'var(--card-field-w)', height: 'var(--card-field-h)' }}
         onClick={onClick}
       >
-        {selectable && <span className="text-gold-400/40 text-xs">+</span>}
+        <span className={`text-gold-400/40 ${selectable ? 'border-gold-400/60 bg-gold-400/5 animate-pulse' : 'border-ink-500/40'}`} style={{ fontSize: 'var(--ui-text-sm)' }}>
+          {selectable ? '+' : ''}
+        </span>
       </div>
     );
   }
@@ -178,31 +179,45 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
     }
   };
 
+  const uiXs = { fontSize: 'var(--ui-text-xs)' } as const;
+  const uiSm = { fontSize: 'var(--ui-text-sm)' } as const;
+  const uiBase = { fontSize: 'var(--ui-text-base)' } as const;
+
   return (
-    <div className="h-[100dvh] overflow-y-auto bg-ink-900 flex flex-col w-full max-w-4xl mx-auto pt-[env(safe-area-inset-top)]">
+    <div
+      className="bg-ink-900 flex flex-col w-full"
+      style={{
+        height: '100dvh',
+        paddingTop: 'env(safe-area-inset-top)',
+        paddingLeft: 'env(safe-area-inset-left)',
+        paddingRight: 'env(safe-area-inset-right)',
+      }}
+    >
       {/* Opponent info */}
-      <div className="px-3 pt-1.5 pb-1 bg-ink-800/60">
+      <div className="px-2 sm:px-3 pt-1.5 pb-1 bg-ink-800/60 flex-none">
         <LPBar player={opp} isCurrent={false} />
         <div className="flex items-center justify-between gap-2 mt-1">
-          <span className="text-[10px] text-ink-400 truncate">
+          <span className="text-ink-400 truncate" style={uiXs}>
             Mazo {opp.deck.length} · Mano {opp.hand.length}/{MAX_HAND_SIZE} · Cem. {opp.graveyard.length}
           </span>
           <div className="flex items-center gap-2 flex-none">
-            <span className="text-[10px] text-ink-400 whitespace-nowrap">T{state.turnCount + 1}</span>
+            <span className="text-ink-400 whitespace-nowrap" style={uiXs}>T{state.turnCount + 1}</span>
             {confirmExit ? (
               <div className="flex items-center gap-1" role="group" aria-label="Confirmar finalizar partida">
-                <span className="text-[10px] text-ink-300">¿Seguro?</span>
+                <span className="text-ink-300" style={uiXs}>¿Seguro?</span>
                 <button
                   type="button"
                   onClick={onExit}
-                  className="px-3 py-1.5 rounded text-xs font-bold bg-red-600 text-white hover:bg-red-500"
+                  className="rounded font-bold bg-red-600 text-white hover:bg-red-500"
+                  style={{ ...uiXs, padding: '0.3em 0.7em' }}
                 >
                   Sí
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmExit(false)}
-                  className="px-3 py-1.5 rounded text-xs font-bold bg-ink-700 text-ink-200 hover:bg-ink-600"
+                  className="rounded font-bold bg-ink-700 text-ink-200 hover:bg-ink-600"
+                  style={{ ...uiXs, padding: '0.3em 0.7em' }}
                 >
                   No
                 </button>
@@ -211,9 +226,10 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
               <button
                 type="button"
                 onClick={() => setConfirmExit(true)}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded text-[11px] font-bold whitespace-nowrap border border-red-500/60 text-red-400 hover:bg-red-500/10"
+                className="flex items-center gap-1 rounded font-bold whitespace-nowrap border border-red-500/60 text-red-400 hover:bg-red-500/10"
+                style={{ ...uiXs, padding: '0.3em 0.6em' }}
               >
-                <LogOut className="w-3 h-3" aria-hidden="true" />
+                <LogOut style={{ width: '1em', height: '1em' }} aria-hidden="true" />
                 Finalizar partida
               </button>
             )}
@@ -222,8 +238,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Opponent hand */}
-      <div className="flex justify-center py-1.5 bg-ink-800/30 min-h-[3.25rem] sm:min-h-[4rem]" aria-label={`El rival tiene ${opp.hand.length} cartas en mano`}>
-        <div className="flex -space-x-2 sm:-space-x-2.5">
+      <div className="flex justify-center py-1 bg-ink-800/30 flex-none" aria-label={`El rival tiene ${opp.hand.length} cartas en mano`}>
+        <div className="flex" style={{ gap: 'calc(var(--card-back-w) * -0.3)' }}>
           {Array.from({ length: opp.hand.length }).map((_, i) => (
             <CardBack key={i} size="xs" />
           ))}
@@ -231,8 +247,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Opponent field */}
-      <div className="px-2 py-1.5 sm:px-3 bg-ink-800/20">
-        <div className="grid grid-cols-6 gap-0.5 sm:gap-1 place-items-center">
+      <div className="px-1 sm:px-2 py-1 bg-ink-800/20 flex-none">
+        <div className="grid grid-cols-6 place-items-center w-full" style={{ gap: 'var(--field-gap)' }}>
           {opp.field.map((fm, i) => (
             <FieldSlot
               key={i}
@@ -248,22 +264,22 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Center status */}
-      <div className="px-3 py-1 flex items-center justify-center min-h-[2rem]">
+      <div className="px-3 py-1 flex items-center justify-center min-h-[2rem] flex-none">
         {state.lastCombat && !trapPrompt && !dicePrompt && (
           <div className="text-center animate-fade-in">
-            <span className="text-xs text-gold-200 text-shadow-strong">{state.lastCombat.log}</span>
+            <span className="text-gold-200 text-shadow-strong" style={uiSm}>{state.lastCombat.log}</span>
           </div>
         )}
         {trapPrompt && (
           <div className="text-center animate-burst">
-            <div className="flex items-center gap-1.5 justify-center text-crimson-300 font-display font-bold text-sm">
+            <div className="flex items-center gap-1.5 justify-center text-crimson-300 font-display font-bold" style={uiBase}>
               <AlertTriangle size={16} /> ¡Trampa activada!
             </div>
           </div>
         )}
         {dicePrompt && (
           <div className="text-center animate-burst">
-            <div className="flex items-center gap-1.5 justify-center text-gold-300 font-display font-bold text-sm">
+            <div className="flex items-center gap-1.5 justify-center text-gold-300 font-display font-bold" style={uiBase}>
               <Dices size={16} /> ¡Tira el dado!
             </div>
           </div>
@@ -271,8 +287,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Player field */}
-      <div className="px-2 py-1.5 sm:px-3 bg-ink-800/20 border-t border-ink-600/50">
-        <div className="grid grid-cols-6 gap-0.5 sm:gap-1 place-items-center">
+      <div className="px-1 sm:px-2 py-1 bg-ink-800/20 border-t border-ink-600/50 flex-none">
+        <div className="grid grid-cols-6 place-items-center w-full" style={{ gap: 'var(--field-gap)' }}>
           {me.field.map((fm, i) => (
             <FieldSlot
               key={i}
@@ -302,23 +318,25 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
           <div className="bg-ink-700 rounded-2xl border-2 border-crimson-500/50 p-5 max-w-xs w-full shadow-glow-crimson">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle size={20} className="text-crimson-400" />
-              <h3 className="font-display font-bold text-crimson-300">Trampa del rival</h3>
+              <h3 className="font-display font-bold text-crimson-300" style={uiBase}>Trampa del rival</h3>
             </div>
-            <p className="text-sm text-white mb-1 font-semibold">{state.pendingTrap!.trap.name}</p>
-            <p className="text-xs text-ink-300 mb-4">{state.pendingTrap!.trap.description}</p>
-            <p className="text-xs text-ink-400 mb-4">
+            <p className="text-white mb-1 font-semibold" style={uiSm}>{state.pendingTrap!.trap.name}</p>
+            <p className="text-ink-300 mb-4" style={uiXs}>{state.pendingTrap!.trap.description}</p>
+            <p className="text-ink-400 mb-4" style={uiXs}>
               Tu {state.pendingTrap!.attackerCard.name} ataca a {state.pendingTrap!.defenderCard.name}.
             </p>
             <div className="flex gap-2">
               <button
                 onClick={() => dispatch({ type: 'RESOLVE_TRAP', activate: true })}
-                className="flex-1 py-3 rounded-lg bg-crimson-500 text-white font-display font-bold text-sm hover:bg-crimson-600 active:scale-95 transition-all"
+                className="flex-1 rounded-lg bg-crimson-500 text-white font-display font-bold hover:bg-crimson-600 active:scale-95 transition-all"
+                style={{ ...uiSm, padding: '0.7em 0' }}
               >
                 Activar trampa
               </button>
               <button
                 onClick={() => dispatch({ type: 'RESOLVE_TRAP', activate: false })}
-                className="flex-1 py-3 rounded-lg bg-ink-500 text-ink-200 font-display font-bold text-sm hover:bg-ink-400 active:scale-95 transition-all"
+                className="flex-1 rounded-lg bg-ink-500 text-ink-200 font-display font-bold hover:bg-ink-400 active:scale-95 transition-all"
+                style={{ ...uiSm, padding: '0.7em 0' }}
               >
                 No activar
               </button>
@@ -332,10 +350,10 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4 animate-fade-in">
           <div className="bg-ink-700 rounded-2xl border-2 border-gold-500/50 p-6 max-w-xs w-full text-center shadow-glow">
             <Dices size={48} className="text-gold-400 mx-auto mb-3" />
-            <h3 className="font-display font-bold text-gold-300 mb-1">Tira el dado</h3>
-            <p className="text-xs text-ink-300 mb-4">{state.pendingDice!.reason}</p>
+            <h3 className="font-display font-bold text-gold-300 mb-1" style={uiBase}>Tira el dado</h3>
+            <p className="text-ink-300 mb-4" style={uiXs}>{state.pendingDice!.reason}</p>
             {state.diceResult !== null ? (
-              <div className="text-5xl font-display font-black text-gold-300 mb-4 animate-burst">
+              <div className="font-display font-black text-gold-300 mb-4 animate-burst" style={{ fontSize: 'clamp(2rem, 8vw, 3rem)' }}>
                 {state.diceResult}
               </div>
             ) : (
@@ -344,7 +362,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
                   const roll = Math.floor(Math.random() * 6) + 1;
                   dispatch({ type: 'ROLL_DICE', roll });
                 }}
-                className="px-8 py-3 rounded-xl bg-gold-400 text-ink-900 font-display font-bold hover:bg-gold-300 shadow-glow active:scale-95 transition-all flex items-center gap-2 mx-auto"
+                className="rounded-xl bg-gold-400 text-ink-900 font-display font-bold hover:bg-gold-300 shadow-glow active:scale-95 transition-all flex items-center gap-2 mx-auto"
+                style={{ ...uiSm, padding: '0.6em 1.5em' }}
               >
                 <Dices size={20} /> Tirar
               </button>
@@ -355,11 +374,12 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
 
       {/* Selection prompt bar */}
       {sel.kind !== 'none' && !trapPrompt && !dicePrompt && (
-        <div className="px-3 py-1.5 bg-gold-500/10 border-t border-gold-500/30 flex items-center justify-between">
-          <span className="text-xs text-gold-200">{selectionPromptText()}</span>
+        <div className="px-3 py-1.5 bg-gold-500/10 border-t border-gold-500/30 flex items-center justify-between flex-none">
+          <span className="text-gold-200" style={uiXs}>{selectionPromptText()}</span>
           <button
             onClick={() => dispatch({ type: 'CANCEL_SELECTION' })}
-            className="text-xs text-ink-300 hover:text-white flex items-center gap-1"
+            className="text-ink-300 hover:text-white flex items-center gap-1"
+            style={uiXs}
           >
             <X size={12} /> Cancelar
           </button>
@@ -367,27 +387,27 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       )}
 
       {/* Player info */}
-      <div className="px-3 py-1 bg-ink-800/60 border-t border-ink-600">
+      <div className="px-2 sm:px-3 py-1 bg-ink-800/60 border-t border-ink-600 flex-none">
         <LPBar player={me} isCurrent={true} />
         <div className="flex items-center justify-between gap-2 mt-1">
-          <span className="text-[10px] text-ink-400 truncate">
+          <span className="text-ink-400 truncate" style={uiXs}>
             Mazo {me.deck.length} ·{' '}
             <span className={me.hand.length >= MAX_HAND_SIZE ? 'text-crimson-400 font-semibold' : ''}>
               Mano {me.hand.length}/{MAX_HAND_SIZE}
             </span>{' '}
             · Cem. {me.graveyard.length}
           </span>
-          <span className="text-[10px] text-gold-400 font-semibold whitespace-nowrap">
+          <span className="text-gold-400 font-semibold whitespace-nowrap" style={uiXs}>
             Cartas: {me.cardsPlayedThisTurn}/3
           </span>
         </div>
       </div>
 
       {/* Hand */}
-      <div className="bg-ink-800/40 py-1.5 sm:py-2 overflow-x-auto overscroll-x-contain touch-pan-x snap-x">
-        <div className="flex gap-1 items-end w-max mx-auto px-3 py-0.5">
+      <div className="bg-ink-800/40 py-1 overflow-x-auto overscroll-x-contain touch-pan-x snap-x flex-1 min-h-0 flex items-center">
+        <div className="flex items-end w-max mx-auto px-2 py-0.5" style={{ gap: 'var(--field-gap)' }}>
           {me.hand.length === 0 && (
-            <span className="text-xs text-ink-400 py-8">No tienes cartas en mano</span>
+            <span className="text-ink-400" style={uiSm}>No tienes cartas en mano</span>
           )}
           {me.hand.map((card) => (
             <div key={card.id} className="snap-center flex-none">
@@ -404,24 +424,26 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
 
       {/* Selected field monster action panel */}
       {selectedField && !selectedCard && (
-        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-azure-500/40 rounded-t-2xl p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
-          <div className="flex items-start gap-4 mb-3">
+        <div className="fixed bottom-0 left-0 right-0 bg-ink-700 border-t-2 border-azure-500/40 rounded-t-2xl p-3 shadow-card-hover z-40 animate-slide-up"
+          style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
+        >
+          <div className="flex items-start gap-3 mb-2">
             <CardView card={selectedField.card} size="lg" fieldMonster={selectedField} isField />
             <div className="flex-1 min-w-0">
-              <h3 className="font-display font-bold text-base text-white">{selectedField.card.name}</h3>
-              <p className="text-xs text-ink-300 mt-1">
+              <h3 className="font-display font-bold text-white" style={uiBase}>{selectedField.card.name}</h3>
+              <p className="text-ink-300 mt-1" style={uiXs}>
                 Monstruo · ATQ {selectedField.card.atk + selectedField.tempAtkModifier} / DEF {selectedField.card.def + selectedField.tempDefModifier}
               </p>
-              <p className="text-xs text-ink-400 mt-0.5">
+              <p className="text-ink-400 mt-0.5" style={uiXs}>
                 Posicion: {selectedField.position === 'attack' ? 'Ataque' : 'Defensa'}
                 {selectedField.hasChangedPosition && ' · Ya cambiada este turno'}
                 {selectedField.hasAttacked && ' · Ya atacó'}
               </p>
               {selectedField.trap && (
-                <p className="text-xs text-crimson-300 mt-0.5">Trampa: {selectedField.trap.name}</p>
+                <p className="text-crimson-300 mt-0.5" style={uiXs}>Trampa: {selectedField.trap.name}</p>
               )}
               {selectedField.magic && (
-                <p className="text-xs text-gold-300 mt-0.5">Magica: {selectedField.magic.name}</p>
+                <p className="text-gold-300 mt-0.5" style={uiXs}>Magica: {selectedField.magic.name}</p>
               )}
             </div>
             <button onClick={() => setSelectedFieldUid(null)} className="text-ink-300 hover:text-white">
@@ -435,7 +457,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
                   dispatch({ type: 'START_ATTACK', attackerUid: selectedField.uid });
                   setSelectedFieldUid(null);
                 }}
-                className="flex-1 py-3.5 rounded-lg bg-crimson-600 text-white font-display font-bold text-sm hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                className="flex-1 rounded-lg bg-crimson-600 text-white font-display font-bold hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                style={{ ...uiSm, padding: '0.7em 0' }}
               >
                 <Swords size={16} /> Atacar
               </button>
@@ -446,13 +469,14 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
                   dispatch({ type: 'CHANGE_POSITION', fieldUid: selectedField.uid });
                   setSelectedFieldUid(null);
                 }}
-                className="flex-1 py-3.5 rounded-lg bg-azure-600 text-white font-display font-bold text-sm hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                className="flex-1 rounded-lg bg-azure-600 text-white font-display font-bold hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                style={{ ...uiSm, padding: '0.7em 0' }}
               >
                 <RotateCw size={16} /> {selectedField.position === 'attack' ? 'A Defensa' : 'A Ataque'}
               </button>
             )}
             {selectedField.hasChangedPosition && (
-              <p className="flex-1 text-xs text-ink-400 text-center py-2.5">Ya has cambiado la posicion de este monstruo este turno</p>
+              <p className="flex-1 text-ink-400 text-center" style={uiXs}>Ya has cambiado la posicion de este monstruo este turno</p>
             )}
           </div>
         </div>
@@ -460,12 +484,14 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
 
       {/* Selected card action panel */}
       {selectedCard && (
-        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-gold-500/40 rounded-t-2xl p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
-          <div className="flex items-start gap-4 mb-3">
+        <div className="fixed bottom-0 left-0 right-0 bg-ink-700 border-t-2 border-gold-500/40 rounded-t-2xl p-3 shadow-card-hover z-40 animate-slide-up"
+          style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
+        >
+          <div className="flex items-start gap-3 mb-2">
             <CardView card={selectedCard} size="lg" />
             <div className="flex-1 min-w-0">
-              <h3 className="font-display font-bold text-base text-white">{selectedCard.name}</h3>
-              <p className="text-xs text-ink-300 mt-1">
+              <h3 className="font-display font-bold text-white" style={uiBase}>{selectedCard.name}</h3>
+              <p className="text-ink-300 mt-1" style={uiXs}>
                 {selectedCard.type === 'monster' && `Monstruo · ATQ ${selectedCard.atk} / DEF ${selectedCard.def}`}
                 {selectedCard.type === 'trap' && `Trampa · ${selectedCard.description}`}
                 {selectedCard.type === 'magic' && `Magica · ${selectedCard.description}`}
@@ -481,14 +507,16 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
                 <button
                   onClick={() => handlePlayMonster(selectedCard, 'attack')}
                   disabled={!canPlayMore || !me.field.some((f) => f === null)}
-                  className="flex-1 py-3.5 rounded-lg bg-crimson-600 text-white font-display font-bold text-sm hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                  className="flex-1 rounded-lg bg-crimson-600 text-white font-display font-bold hover:bg-crimson-500 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                  style={{ ...uiSm, padding: '0.7em 0' }}
                 >
                   <Swords size={16} /> Ataque
                 </button>
                 <button
                   onClick={() => handlePlayMonster(selectedCard, 'defense')}
                   disabled={!canPlayMore || !me.field.some((f) => f === null)}
-                  className="flex-1 py-3.5 rounded-lg bg-azure-600 text-white font-display font-bold text-sm hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                  className="flex-1 rounded-lg bg-azure-600 text-white font-display font-bold hover:bg-azure-500 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                  style={{ ...uiSm, padding: '0.7em 0' }}
                 >
                   <Shield size={16} /> Defensa
                 </button>
@@ -498,7 +526,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
               <button
                 onClick={() => handlePlayTrap(selectedCard)}
                 disabled={!canPlayMore || !me.field.some((f) => f !== null && !f.trap)}
-                className="flex-1 py-3.5 rounded-lg bg-crimson-500 text-white font-display font-bold text-sm hover:bg-crimson-600 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                className="flex-1 rounded-lg bg-crimson-500 text-white font-display font-bold hover:bg-crimson-600 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                style={{ ...uiSm, padding: '0.7em 0' }}
               >
                 <Zap size={16} /> Colocar trampa
               </button>
@@ -507,28 +536,32 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
               <button
                 onClick={() => handlePlayMagic(selectedCard)}
                 disabled={!canPlayMore}
-                className="flex-1 py-3.5 rounded-lg bg-gold-500 text-ink-900 font-display font-bold text-sm hover:bg-gold-400 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                className="flex-1 rounded-lg bg-gold-500 text-ink-900 font-display font-bold hover:bg-gold-400 active:scale-95 transition-all flex items-center justify-center gap-1.5 disabled:opacity-40"
+                style={{ ...uiSm, padding: '0.7em 0' }}
               >
                 <Play size={16} /> Usar magica
               </button>
             )}
           </div>
           {!canPlayMore && (
-            <p className="text-xs text-crimson-400 text-center mt-2">Ya has jugado 3 cartas este turno</p>
+            <p className="text-crimson-400 text-center mt-1.5" style={uiXs}>Ya has jugado 3 cartas este turno</p>
           )}
         </div>
       )}
 
       {/* Bottom action bar */}
-      <div className="px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] bg-ink-800 border-t border-ink-600 flex items-center gap-2">
+      <div className="px-2 sm:px-3 pt-1.5 pb-1 bg-ink-800 border-t border-ink-600 flex items-center gap-2 flex-none"
+        style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
+      >
         <button
           onClick={() => setShowLog(true)}
-          className="px-3 py-2.5 rounded-lg bg-ink-600 text-ink-200 text-xs font-semibold hover:bg-ink-500 active:scale-95 transition-all flex items-center gap-1"
+          className="rounded-lg bg-ink-600 text-ink-200 font-semibold hover:bg-ink-500 active:scale-95 transition-all flex items-center gap-1"
+          style={{ ...uiXs, padding: '0.5em 0.8em' }}
         >
           <Eye size={14} /> Registro
         </button>
         <div className="flex-1 min-w-0 text-center">
-          <span className="text-[11px] sm:text-xs text-ink-300 leading-tight">
+          <span className="text-ink-300 leading-tight" style={uiXs}>
             {attackAllowed ? 'Puedes atacar' : 'Sin ataque este turno'}
           </span>
         </div>
@@ -537,7 +570,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
             setSelectedHandCard(null);
             dispatch({ type: 'END_TURN' });
           }}
-          className="px-4 py-2.5 whitespace-nowrap rounded-lg bg-gold-400 text-ink-900 font-display font-bold text-xs hover:bg-gold-300 shadow-glow active:scale-95 transition-all flex items-center gap-1"
+          className="whitespace-nowrap rounded-lg bg-gold-400 text-ink-900 font-display font-bold hover:bg-gold-300 shadow-glow active:scale-95 transition-all flex items-center gap-1"
+          style={{ ...uiXs, padding: '0.5em 1em' }}
         >
           Terminar turno
           <ChevronRight size={14} />
@@ -545,8 +579,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {isCpuTurn && !trapPrompt && !dicePrompt && (
-        <div className="fixed inset-0 z-40 flex items-end justify-center pb-24 bg-black/20" aria-live="polite">
-          <div className="rounded-full border border-azure-400/40 bg-ink-800/90 px-4 py-2 text-xs font-display font-bold text-azure-300 shadow-glow animate-pulse">
+        <div className="fixed inset-0 z-40 flex items-end justify-center bg-black/20" aria-live="polite" style={{ paddingBottom: '15vh' }}>
+          <div className="rounded-full border border-azure-400/40 bg-ink-800/90 px-4 py-2 font-display font-bold text-azure-300 shadow-glow animate-pulse" style={uiSm}>
             Turno de la CPU...
           </div>
         </div>
@@ -555,18 +589,21 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       {/* Log modal */}
       {showLog && (
         <div className="fixed inset-0 bg-black/70 flex items-end justify-center z-50 animate-fade-in" onClick={() => setShowLog(false)}>
-          <div className="bg-ink-700 rounded-t-2xl border-t-2 border-gold-500/40 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] max-w-4xl w-full max-h-[70dvh] overscroll-contain overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-ink-700 rounded-t-2xl border-t-2 border-gold-500/40 p-4 w-full overscroll-contain overflow-y-auto"
+            style={{ maxWidth: '100%', maxHeight: '70dvh', paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-display font-bold text-gold-300">Registro de juego</h3>
+              <h3 className="font-display font-bold text-gold-300" style={uiBase}>Registro de juego</h3>
               <button onClick={() => setShowLog(false)} className="text-ink-300 hover:text-white">
                 <X size={18} />
               </button>
             </div>
             <div className="space-y-1">
               {state.log.slice().reverse().map((entry, i) => (
-                <div key={i} className="text-xs text-ink-200 py-1 border-b border-ink-600/50">{entry}</div>
+                <div key={i} className="text-ink-200 py-1 border-b border-ink-600/50" style={uiXs}>{entry}</div>
               ))}
-              {state.log.length === 0 && <p className="text-xs text-ink-400">Sin eventos todavía</p>}
+              {state.log.length === 0 && <p className="text-ink-400" style={uiXs}>Sin eventos todavía</p>}
             </div>
           </div>
         </div>

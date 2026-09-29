@@ -13,11 +13,11 @@ function StartScreen({ onStart }: { onStart: (mode: GameMode, difficulty: Diffic
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
 
   return (
-    <div className="min-h-[100dvh] bg-ink-900 flex flex-col items-center justify-center px-6 py-8">
+    <div className="bg-ink-900 flex flex-col items-center justify-center px-6 py-8" style={{ minHeight: '100dvh' }}>
       <div className="animate-pulse-glow w-20 h-20 rounded-2xl border-2 border-gold-500/40 flex items-center justify-center mb-6">
         <Swords size={36} className="text-gold-400" />
       </div>
-      <h1 className="font-display text-3xl font-black text-gold-300 mb-2 text-center">Bestias de Guerra</h1>
+      <h1 className="font-display text-3xl sm:text-4xl font-black text-gold-300 mb-2 text-center" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>Bestias de Guerra</h1>
       <p className="text-sm text-ink-300 text-center mb-1">Juego de cartas con baraja española</p>
       <p className="text-xs text-ink-400 text-center mb-6 max-w-xs">
         2 jugadores · 48 cartas cada uno · 100 PV · 6 espacios · máx. 9 cartas en mano
