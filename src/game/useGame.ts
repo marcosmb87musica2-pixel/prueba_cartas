@@ -19,7 +19,6 @@ import {
   createPlayer,
   drawCards,
   getEffectiveAtk,
-  getEffectiveDef,
   getFirstEmptySlot,
   hasEmptySlot,
   resolveCombat,
@@ -95,16 +94,6 @@ function applyHeal(player: PlayerState, heal: number): PlayerState {
   return { ...player, lp: Math.min(999, player.lp + heal) };
 }
 
-function allFieldMonsters(state: GameState): { fm: FieldMonster; player: 0 | 1; slot: number }[] {
-  const result: { fm: FieldMonster; player: 0 | 1; slot: number }[] = [];
-  state.players.forEach((p, pi) => {
-    p.field.forEach((f, si) => {
-      if (f) result.push({ fm: f, player: pi as 0 | 1, slot: si });
-    });
-  });
-  return result;
-}
-
 // --- Trap resolution ---
 function applyTrapEffect(
   state: GameState,
@@ -114,7 +103,7 @@ function applyTrapEffect(
   attackerUid: string,
   defenderUid: string,
 ): { state: GameState; negateAttack: boolean; destroyAttacker: boolean; skipCombat: boolean } {
-  let players = [...state.players] as [PlayerState, PlayerState];
+  const players = [...state.players] as [PlayerState, PlayerState];
   let negateAttack = false;
   let destroyAttacker = false;
   let skipCombat = false;
@@ -224,7 +213,7 @@ function applyTrapEffect(
 
 // --- Magic resolution ---
 function applyMagicEffect(state: GameState, card: MagicCard, targetUid?: string, side?: 'self' | 'enemy'): GameState {
-  let players = [...state.players] as [PlayerState, PlayerState];
+  const players = [...state.players] as [PlayerState, PlayerState];
   const me = state.currentPlayer;
   const opp = (me === 0 ? 1 : 0) as 0 | 1;
   const log: string[] = [];
@@ -387,7 +376,7 @@ function applyMagicEffect(state: GameState, card: MagicCard, targetUid?: string,
 
 // --- Turn start/end effects ---
 function applyTurnStartEffects(state: GameState, playerIdx: 0 | 1): GameState {
-  let players = [...state.players] as [PlayerState, PlayerState];
+  const players = [...state.players] as [PlayerState, PlayerState];
   const log: string[] = [];
   const p = players[playerIdx];
 
@@ -641,7 +630,7 @@ function reducer(state: GameState, action: Action): GameState {
       if (state.phase !== 'playing') return state;
       const nextPlayer = (state.currentPlayer === 0 ? 1 : 0) as 0 | 1;
       // Reset current player's field
-      let players = [...state.players] as [PlayerState, PlayerState];
+      const players = [...state.players] as [PlayerState, PlayerState];
       players[state.currentPlayer] = {
         ...players[state.currentPlayer],
         field: players[state.currentPlayer].field.map((f) =>
@@ -672,7 +661,7 @@ function reducer(state: GameState, action: Action): GameState {
       if (state.phase !== 'dice-roll' || !state.pendingDice) return state;
       const roll = action.roll;
       const reason = state.pendingDice.reason;
-      let players = [...state.players] as [PlayerState, PlayerState];
+      const players = [...state.players] as [PlayerState, PlayerState];
       const log: string[] = [`🎲 Dado: ${roll} (${reason})`];
 
       // Handle trap 3 (dice_count_field) or trap 6 (dice_4plus_destroy) or magic 11 (dice_damage)
@@ -756,7 +745,7 @@ function reducer(state: GameState, action: Action): GameState {
 function executeDirectAttack(state: GameState, attackerUid: string): GameState {
   const cp = state.currentPlayer;
   const opp = (cp === 0 ? 1 : 0) as 0 | 1;
-  let players = [...state.players] as [PlayerState, PlayerState];
+  const players = [...state.players] as [PlayerState, PlayerState];
   const attacker = findFieldMonster(players[cp], attackerUid);
   if (!attacker) return state;
   const dmg = getEffectiveAtk(attacker);
@@ -776,13 +765,12 @@ function executeDirectAttack(state: GameState, attackerUid: string): GameState {
 function executeCombat(state: GameState, attackerUid: string, defenderUid: string): GameState {
   const cp = state.currentPlayer;
   const opp = (cp === 0 ? 1 : 0) as 0 | 1;
-  let players = [...state.players] as [PlayerState, PlayerState];
-  let attacker = findFieldMonster(players[cp], attackerUid);
-  let defender = findFieldMonster(players[opp], defenderUid);
+  const players = [...state.players] as [PlayerState, PlayerState];
+  const attacker = findFieldMonster(players[cp], attackerUid);
+  const defender = findFieldMonster(players[opp], defenderUid);
   if (!attacker || !defender) return state;
 
   if (defender.faceDown) {
-    defender = { ...defender, faceDown: false };
     players[opp] = updateFieldMonster(players[opp], defenderUid, (fm) => ({ ...fm, faceDown: false }));
   }
 
