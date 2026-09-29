@@ -61,7 +61,7 @@ function FieldSlot({
   if (!fm) {
     return (
       <div
-        className={`w-[52px] h-[78px] sm:w-16 sm:h-24 rounded-lg border-2 border-dashed flex items-center justify-center ${
+        className={`w-[44px] h-[66px] sm:w-[52px] sm:h-[78px] rounded-lg border-2 border-dashed flex items-center justify-center ${
           selectable ? 'border-gold-400/60 bg-gold-400/5 animate-pulse' : 'border-ink-500/40'
         }`}
         onClick={onClick}
@@ -179,9 +179,9 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
   };
 
   return (
-    <div className="h-[100dvh] overflow-y-auto bg-ink-900 flex flex-col w-full max-w-6xl mx-auto pt-[env(safe-area-inset-top)]">
+    <div className="h-[100dvh] overflow-y-auto bg-ink-900 flex flex-col w-full max-w-4xl mx-auto pt-[env(safe-area-inset-top)]">
       {/* Opponent info */}
-      <div className="px-3 pt-2 pb-1 bg-ink-800/60">
+      <div className="px-3 pt-1.5 pb-1 bg-ink-800/60">
         <LPBar player={opp} isCurrent={false} />
         <div className="flex items-center justify-between gap-2 mt-1">
           <span className="text-[10px] text-ink-400 truncate">
@@ -222,8 +222,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Opponent hand */}
-      <div className="flex justify-center py-1.5 bg-ink-800/30 min-h-[2.75rem] sm:min-h-[3.5rem]" aria-label={`El rival tiene ${opp.hand.length} cartas en mano`}>
-        <div className="flex -space-x-3">
+      <div className="flex justify-center py-1 bg-ink-800/30 min-h-[2.25rem] sm:min-h-[3rem]" aria-label={`El rival tiene ${opp.hand.length} cartas en mano`}>
+        <div className="flex -space-x-2 sm:-space-x-2.5">
           {Array.from({ length: opp.hand.length }).map((_, i) => (
             <CardBack key={i} size="xs" />
           ))}
@@ -231,8 +231,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Opponent field */}
-      <div className="px-2 py-2 sm:px-3 bg-ink-800/20">
-        <div className="grid grid-cols-6 gap-1 place-items-center">
+      <div className="px-2 py-1.5 sm:px-3 bg-ink-800/20">
+        <div className="grid grid-cols-6 gap-0.5 sm:gap-1 place-items-center">
           {opp.field.map((fm, i) => (
             <FieldSlot
               key={i}
@@ -271,8 +271,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Player field */}
-      <div className="px-2 py-2 sm:px-3 bg-ink-800/20 border-t border-ink-600/50">
-        <div className="grid grid-cols-6 gap-1 place-items-center">
+      <div className="px-2 py-1.5 sm:px-3 bg-ink-800/20 border-t border-ink-600/50">
+        <div className="grid grid-cols-6 gap-0.5 sm:gap-1 place-items-center">
           {me.field.map((fm, i) => (
             <FieldSlot
               key={i}
@@ -384,8 +384,8 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Hand */}
-      <div className="bg-ink-800/40 py-2 sm:py-3 overflow-x-auto overscroll-x-contain touch-pan-x snap-x">
-        <div className="flex gap-1.5 items-end w-max mx-auto px-3 py-1">
+      <div className="bg-ink-800/40 py-1.5 sm:py-2 overflow-x-auto overscroll-x-contain touch-pan-x snap-x">
+        <div className="flex gap-1 items-end w-max mx-auto px-3 py-0.5">
           {me.hand.length === 0 && (
             <span className="text-xs text-ink-400 py-8">No tienes cartas en mano</span>
           )}
@@ -404,7 +404,7 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
 
       {/* Selected field monster action panel */}
       {selectedField && !selectedCard && (
-        <div className="fixed bottom-0 left-0 right-0 max-w-6xl mx-auto bg-ink-700 border-t-2 border-azure-500/40 rounded-t-2xl p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
+        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-azure-500/40 rounded-t-2xl p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
           <div className="flex items-start gap-3 mb-2">
             <CardView card={selectedField.card} size="sm" fieldMonster={selectedField} isField />
             <div className="flex-1 min-w-0">
@@ -460,7 +460,7 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
 
       {/* Selected card action panel */}
       {selectedCard && (
-        <div className="fixed bottom-0 left-0 right-0 max-w-6xl mx-auto bg-ink-700 border-t-2 border-gold-500/40 rounded-t-2xl p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
+        <div className="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-ink-700 border-t-2 border-gold-500/40 rounded-t-2xl p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-card-hover z-40 animate-slide-up">
           <div className="flex items-start gap-3 mb-2">
             <CardView card={selectedCard} size="sm" />
             <div className="flex-1 min-w-0">
@@ -555,7 +555,7 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       {/* Log modal */}
       {showLog && (
         <div className="fixed inset-0 bg-black/70 flex items-end justify-center z-50 animate-fade-in" onClick={() => setShowLog(false)}>
-          <div className="bg-ink-700 rounded-t-2xl border-t-2 border-gold-500/40 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] max-w-6xl w-full max-h-[70dvh] overscroll-contain overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-ink-700 rounded-t-2xl border-t-2 border-gold-500/40 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] max-w-4xl w-full max-h-[70dvh] overscroll-contain overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-display font-bold text-gold-300">Registro de juego</h3>
               <button onClick={() => setShowLog(false)} className="text-ink-300 hover:text-white">

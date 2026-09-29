@@ -43,9 +43,9 @@ export function CardView({
   className = '',
 }: CardViewProps) {
   const sizes = {
-    sm: { w: 'w-[52px] sm:w-16', h: 'h-[78px] sm:h-24', text: 'text-[7px] sm:text-[8px]', num: 'text-xs', emoji: 'text-lg', bar: 'h-4' },
-    md: { w: 'w-20', h: 'h-28', text: 'text-[9px]', num: 'text-sm', emoji: 'text-2xl', bar: 'h-5' },
-    lg: { w: 'w-24', h: 'h-36', text: 'text-[10px]', num: 'text-base', emoji: 'text-3xl', bar: 'h-6' },
+    sm: { w: 'w-[44px] sm:w-[52px]', h: 'h-[66px] sm:h-[78px]', text: 'text-[6px] sm:text-[7px]', num: 'text-[10px] sm:text-xs', emoji: 'text-sm sm:text-lg', bar: 'h-3 sm:h-4' },
+    md: { w: 'w-16', h: 'h-24', text: 'text-[8px]', num: 'text-xs', emoji: 'text-xl', bar: 'h-4' },
+    lg: { w: 'w-20', h: 'h-28', text: 'text-[9px]', num: 'text-sm', emoji: 'text-2xl', bar: 'h-5' },
   };
   const s = sizes[size];
 
@@ -208,7 +208,7 @@ export function CardView({
 }
 
 export function CardBack({ size = 'md' }: { size?: 'xs' | 'sm' | 'md' | 'lg' }) {
-  const sizes = { xs: 'w-7 h-10 sm:w-8 sm:h-12', sm: 'w-[52px] h-[78px] sm:w-16 sm:h-24', md: 'w-20 h-28', lg: 'w-24 h-36' };
+  const sizes = { xs: 'w-6 h-9 sm:w-7 sm:h-10', sm: 'w-[44px] h-[66px] sm:w-[52px] sm:h-[78px]', md: 'w-16 h-24', lg: 'w-20 h-28' };
   if (size === 'xs') {
     return <div className={`${sizes.xs} rounded card-back border border-gold-700/40 shadow-card`} />;
   }
