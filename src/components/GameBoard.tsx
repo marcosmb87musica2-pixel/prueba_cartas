@@ -497,7 +497,7 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
             <CardView card={selectedCard} size="lg" />
             <div className="flex-1 min-w-0">
               <h3 className="font-display font-bold text-white" style={uiBase}>{selectedCard.name}</h3>
-              <p className="text-ink-300 mt-1" style={uiXs}>
+              <p className="text-ink-300 mt-1" style={{ fontSize: '20px' }}>
                 {selectedCard.type === 'monster' && `Monstruo · ATQ ${selectedCard.atk} / DEF ${selectedCard.def}`}
                 {selectedCard.type === 'trap' && `Trampa · ${selectedCard.description}`}
                 {selectedCard.type === 'magic' && `Magica · ${selectedCard.description}`}
