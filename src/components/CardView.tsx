@@ -43,9 +43,9 @@ export function CardView({
   className = '',
 }: CardViewProps) {
   const sizes = {
-    sm: { w: 'w-[56px] sm:w-[68px]', h: 'h-[84px] sm:h-[102px]', text: 'text-[7px] sm:text-[8px]', num: 'text-xs sm:text-sm', emoji: 'text-lg sm:text-xl', bar: 'h-4 sm:h-5' },
-    md: { w: 'w-20 sm:w-24', h: 'h-28 sm:h-32', text: 'text-[9px] sm:text-[10px]', num: 'text-sm sm:text-base', emoji: 'text-2xl sm:text-3xl', bar: 'h-5 sm:h-6' },
-    lg: { w: 'w-28', h: 'h-40', text: 'text-[11px]', num: 'text-lg', emoji: 'text-4xl', bar: 'h-7' },
+    sm: { w: 'w-[56px] sm:w-[68px]', h: 'h-[84px] sm:h-[102px]', text: 'text-[9px] sm:text-[10px]', num: 'text-sm sm:text-base', emoji: 'text-xl sm:text-2xl', bar: 'h-5 sm:h-6' },
+    md: { w: 'w-20 sm:w-24', h: 'h-28 sm:h-32', text: 'text-[11px] sm:text-xs', num: 'text-base sm:text-lg', emoji: 'text-3xl sm:text-4xl', bar: 'h-6 sm:h-7' },
+    lg: { w: 'w-28', h: 'h-40', text: 'text-sm', num: 'text-xl', emoji: 'text-5xl', bar: 'h-8' },
   };
   const s = sizes[size];
 
@@ -101,23 +101,23 @@ export function CardView({
           </div>
           <div className={`flex justify-between items-center ${s.bar} px-1 mt-0.5`}>
             <div className="flex items-center gap-0.5">
-              <Sword size={8} className="text-crimson-400" />
+              <Sword size={12} className="text-crimson-400" />
               <span className={`${s.text} font-bold text-white`}>{atk}</span>
             </div>
             <div className="flex items-center gap-0.5">
               <span className={`${s.text} font-bold text-white`}>{def}</span>
-              <Shield size={8} className="text-azure-400" />
+              <Shield size={12} className="text-azure-400" />
             </div>
           </div>
         </div>
         {showTrap && fieldMonster?.trap && (
-          <div className="absolute top-0 right-0 w-3 h-3 bg-crimson-500 rounded-bl-md rounded-tr-lg flex items-center justify-center">
-            <span className="text-[6px] text-white font-bold">T</span>
+          <div className="absolute top-0 right-0 w-4 h-4 bg-crimson-500 rounded-bl-md rounded-tr-lg flex items-center justify-center">
+            <span className="text-[8px] text-white font-bold">T</span>
           </div>
         )}
         {showMagic && fieldMonster?.magic && (
-          <div className="absolute top-0 left-0 w-3 h-3 bg-gold-400 rounded-br-md rounded-tl-lg flex items-center justify-center">
-            <span className="text-[6px] text-ink-900 font-bold">M</span>
+          <div className="absolute top-0 left-0 w-4 h-4 bg-gold-400 rounded-br-md rounded-tl-lg flex items-center justify-center">
+            <span className="text-[8px] text-ink-900 font-bold">M</span>
           </div>
         )}
         {isField && fieldMonster?.hasAttacked && (
@@ -128,8 +128,8 @@ export function CardView({
           </div>
         )}
         {fieldMonster?.pendingEffect && (
-          <div className="absolute bottom-0 left-0 px-0.5 bg-violet-500/80 rounded-tr-md">
-            <span className="text-[6px] text-white font-bold">{fieldMonster.pendingTurns}</span>
+          <div className="absolute bottom-0 left-0 px-1 bg-violet-500/80 rounded-tr-md">
+            <span className="text-[8px] text-white font-bold">{fieldMonster.pendingTurns}</span>
           </div>
         )}
       </div>
