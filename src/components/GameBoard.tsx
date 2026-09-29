@@ -61,7 +61,7 @@ function FieldSlot({
   if (!fm) {
     return (
       <div
-        className={`w-[44px] h-[66px] sm:w-[52px] sm:h-[78px] rounded-lg border-2 border-dashed flex items-center justify-center ${
+        className={`w-[56px] h-[84px] sm:w-[68px] sm:h-[102px] rounded-lg border-2 border-dashed flex items-center justify-center ${
           selectable ? 'border-gold-400/60 bg-gold-400/5 animate-pulse' : 'border-ink-500/40'
         }`}
         onClick={onClick}
@@ -222,7 +222,7 @@ export function GameBoard({ state, dispatch, onExit }: GameBoardProps) {
       </div>
 
       {/* Opponent hand */}
-      <div className="flex justify-center py-1 bg-ink-800/30 min-h-[2.25rem] sm:min-h-[3rem]" aria-label={`El rival tiene ${opp.hand.length} cartas en mano`}>
+      <div className="flex justify-center py-1.5 bg-ink-800/30 min-h-[3.25rem] sm:min-h-[4rem]" aria-label={`El rival tiene ${opp.hand.length} cartas en mano`}>
         <div className="flex -space-x-2 sm:-space-x-2.5">
           {Array.from({ length: opp.hand.length }).map((_, i) => (
             <CardBack key={i} size="xs" />
